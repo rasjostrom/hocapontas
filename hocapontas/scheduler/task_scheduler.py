@@ -100,6 +100,7 @@ def is_valid_date(date):
     and can be parsed into a datetime date object.
 
     :param date: The date str ('YYYY-mm-dd').
+    :type date: str
     :rtype: bool
 
     :raises: ValueError
@@ -194,9 +195,7 @@ def delete_item(item_id):
 
     :param item_id: The id of the target to delete.
     :type item_id: int
-    :returns: Status message, empty if successful
     :rtype: bool
-    :raises: IOError
     """
     for item in db.read():
         if item_id == item['id']:
@@ -209,7 +208,3 @@ def reset_db():
     """Completely removes and recreates an empty database.
     """
     db.reset()
-
-
-if __name__ == "__main__":
-    print('imported')
