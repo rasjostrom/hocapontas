@@ -1,8 +1,3 @@
-"""This module contains functions for scheduling and
-managing task items. It serves as a kind of API layer and
-imports a plain-text, JSON storage module to store data
-persistently.
-"""
 import datetime
 from hocapontas import json_db
 from contracts import contract
@@ -12,8 +7,9 @@ today = str(datetime.date.today())
 
 
 @contract
-def add_item(deadline, description, comments, priority, completed):
-    """Builds a list of task item attributes from the given
+def add_item(deadline, description, comments, priority, completed=False):
+    """
+    Builds a list of task item attributes from the given
     input parameters and writes the item to database after
     proper validation.
 
@@ -25,8 +21,9 @@ def add_item(deadline, description, comments, priority, completed):
     :type comments: list
     :param priority: Priority value used to compare items.
     :type priority: int
-    :param completed: Indication of an item's is completion.
+    :param completed: Indication of an item's completion. **Optional**
     :type completed: bool
+    :returns: The newly created item.
     :rtype: dict
 
     :raises: ValueError
@@ -41,7 +38,8 @@ def add_item(deadline, description, comments, priority, completed):
 
 @contract
 def is_valid_item(deadline, description, comments, priority, completed):
-    """Validates the attributes of a task item and accumulates
+    """
+    Validates the attributes of a task item and accumulates
     any error messages along the way. If no errors can be
     found, the item is valid and the return string is empty.
 
@@ -55,6 +53,7 @@ def is_valid_item(deadline, description, comments, priority, completed):
     :type priority: int
     :param completed: Indication of an item's is completion.
     :type completed: bool
+    :returns: An empty or messages describing any invalid values.
     :rtype: str
     """
     is_valid_date(deadline)
@@ -96,13 +95,14 @@ def is_valid_item(deadline, description, comments, priority, completed):
 
 @contract
 def is_valid_date(date):
-    """Checks if a date string of format YYYY-mm-dd is valid
+    """
+    Checks if a date string of format YYYY-mm-dd is valid
     and can be parsed into a datetime date object.
 
     :param date: The date str ('YYYY-mm-dd').
     :type date: str
+    :returns: Th validity of a deadline date string.
     :rtype: bool
-
     :raises: ValueError
     """
     try:
@@ -115,11 +115,13 @@ def is_valid_date(date):
 
 @contract
 def list_by_id(item_id):
-    """Queries the database for an item with the given item_id
+    """
+    Queries the database for an item with the given item_id
     and returns it if found.
 
     :param item_id: The ID of the target item.
     :type item_id: int
+    :returns: The task item or None.
     :rtype: dict
     """
     for task in db.read():
@@ -129,7 +131,8 @@ def list_by_id(item_id):
 
 @contract
 def list_in_range(date_from=today, date_to=today):
-    """Lists all tasks which have a deadline within the given
+    """
+    Lists all tasks which have a deadline within the given
     range of dates. Defaults to the actual date of when it's
     being called.
 
@@ -152,8 +155,9 @@ def list_in_range(date_from=today, date_to=today):
 
 @contract
 def update_item(item_id, **kwargs):
-    """Updates the field of an item using the given keyword
-    arguments. Raises a KeyError if a key is not found.
+    """
+    Updates the field of an item using the given keyword
+    arguments. Raises a KeyError if an invalid key is given..
 
     :param item_id: The id of the target item to update.
     :type item_id: int
@@ -173,8 +177,9 @@ def update_item(item_id, **kwargs):
 
 
 def toggle_completed(item_id):
-    """Toggles the completion status of an item between True
-     and False given by the item id.
+    """
+   Toggles the completion status of an item between True
+   and False given by the item id.
 
     :param item_id: The id of the target item to update.
     :type item_id: int
@@ -189,12 +194,14 @@ def toggle_completed(item_id):
 
 @contract
 def delete_item(item_id):
-    """Deletes any item with the given item_id from the
+    """
+    Deletes any item with the given item_id from the
     database. Returns True if the item was found and
     deleted or False if the item was not found.
 
     :param item_id: The id of the target to delete.
     :type item_id: int
+    :returns: Status of the operation.
     :rtype: bool
     """
     for item in db.read():
@@ -205,6 +212,7 @@ def delete_item(item_id):
 
 
 def reset_db():
-    """Completely removes and recreates an empty database.
+    """
+    Completely removes and recreates an empty database.
     """
     db.reset()
