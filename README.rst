@@ -2,8 +2,6 @@ hocapontas
 ==========
 
 .. image:: https://readthedocs.org/projects/hocapontas/badge/?version=latest
-:target: http://hocapontas.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
       
 hocapontas is a small library built to provide an easy to use API when
 developing 'life-assisting' applications in Python. Example areas where
