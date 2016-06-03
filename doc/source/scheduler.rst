@@ -1,6 +1,6 @@
 Task Scheduler API
 ==================
-.. automodule:: scheduler
+.. automodule:: hocapontas.scheduler
 
 
 -------------------------
